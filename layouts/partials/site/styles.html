@@ -1,3 +1,5 @@
-{{ $s := resources.Get "sass/app.sass" | toCSS | postCSS (dict "config" "postcss.config.js") | minify }}
+{{ $normalize := resources.Get "css/vendor/normalize-8.0.1.css" }}
+{{ $app := resources.Get "sass/app.sass" | toCSS }}
 
-<link rel="stylesheet" href="{{ $s.Permalink }}" />
+{{ $css := slice $normalize $app | resources.Concat "css/bundle.css" | postCSS (dict "config" "postcss.config.js") | minify | fingerprint "sha512"}}
+<link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.Integrity }}"/>

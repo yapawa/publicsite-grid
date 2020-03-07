@@ -4,16 +4,25 @@
 
         {{ block "site/meta" . }}{{ partial "site/meta.html" . }}{{ end }}
 
-        <title>{{ block "title" . }}
-            {{- with .Title }}{{ . }} | {{ end }}{{ .Site.Title -}}
-        {{ end }}</title>
+        <title>{{ block "title" . }}{{ .Site.Title }} {{ with .Params.Title }} | {{ . }}{{ end }}{{ end }}</title>
 
-        {{ range .AlternativeOutputFormats }}
-            <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}">
+        {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+            <meta name="robotos" content="index, follow">
+        {{ else }}
+            <meta name="robots" content="noindex, nofollow">
         {{ end }}
+        {{ range .AlternativeOutputFormats -}}
+            {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+        {{ end -}}
 
         {{ block "site/styles" . }}{{ partial "site/styles.html" . }}{{ end }}
 
+        {{- template "_internal/opengraph.html" . -}}
+        {{- template "_internal/schema.html" . -}}
+        {{- template "_internal/twitter_cards.html" . -}}
+        {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+            {{ template "_internal/google_analytics_async.html" . }}
+        {{ end }}
     </head>
     <body>
 
@@ -28,6 +37,5 @@
         {{ block "footer" . }}{{ partial "site/footer.html" . }}{{ end }}
 
         {{ block "site/scripts" . }}{{ partial "site/scripts.html" . }}{{ end }}
-
     </body>
 </html>

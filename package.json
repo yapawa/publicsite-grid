@@ -5,11 +5,22 @@
     "start": "hugo server",
     "build": "hugo && npm run build:functions",
     "build:functions": "netlify-lambda build assets/lambda",
-    "server": "hugo server"
+    "server": "hugo server",
+    "content": "node makeContent.js"
   },
   "dependencies": {
-    "autoprefixer": "^9.6.1",
-    "netlify-lambda": "^1.5.0",
-    "postcss-cli": "^6.1.3"
+    "autoprefixer": "^9.7.4",
+    "netlify-lambda": "^1.6.3",
+    "postcss-cli": "^7.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "got": "^10.6.0",
+    "toml": "^3.0.0"
   }
 }

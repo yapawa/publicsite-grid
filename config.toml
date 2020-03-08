@@ -4,6 +4,7 @@ title = "Daniel Muller"
 
 enableRobotsTXT = true
 disableAliases = true
+theme = "grid"
 
 [params]
 disallow_search_engines = false # set robots.txt to disallow everything

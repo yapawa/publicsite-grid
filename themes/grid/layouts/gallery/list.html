@@ -12,7 +12,9 @@
           {{ if $cover }}
             {{ partial "thumbnail.html" (dict "item" $cover "cacheDomain" $.Site.Params.cacheDomain "transf" "w_272,h_181,c_crop" "width" 272 "height" 181 ) }}
           {{ else }}
-            <img src="https://placeimg.com/272/181/arch/grayscale/{{ .Slug }}" width="272" height="181">
+            <div class="placeholder">
+              <img src="/placeholder.svg">
+            </div>
           {{ end }}
         </a>
         <div class="album-info">

@@ -1,15 +1,23 @@
 {{ define "main" }}
-  gallery/single.html
+
   <article>
-    <h2>{{ .Title }}</h2>
-    {{ .Content }}
+    {{ partial "album-title.html" . }}
+
+    {{- $width := 250 -}}
+    {{- $gutter := 5 -}}
     {{ $dataJ := getJSON $.Site.Params.api "albums/" .Params.albumId "/content" }}
-    <div class="photo-grid" data-masonry='{ "itemSelector": ".photo-grid-item", "columnWidth": 250, "gutter": 5 }'>
-    {{ range $dataJ }}
-      {{- $width := 250 -}}
-      {{- $height := math.Round (div (mul $width .height) .width) -}}
-      <div class="photo-grid-item">
-        {{ partial "thumbnail.html" (dict "item" . "cacheDomain" $.Site.Params.cacheDomain "transf" "w_250" "width" $width "height" $height) }}
+    <div class="photo-grid" data-masonry='{ "itemSelector": ".photo-grid-item", "columnWidth": {{ $width }}, "gutter": {{ $gutter }}, "fitWidth": true }'>
+    {{- range $dataJ -}}
+      {{- $imgWidth := $width -}}
+      {{- $gridCss := "" -}}
+      {{- if (gt (div .width .height) 2) }}
+        {{- $imgWidth = add (mul $width 2) $gutter -}}
+        {{- $gridCss = " photo-grid-item--width2" -}}
+      {{- end -}}
+      {{- $transf := printf "w_%d" $imgWidth -}}
+      {{- $imgHeight := math.Round (div (mul $imgWidth .height) .width) -}}
+      <div class="photo-grid-item{{ $gridCss }}">
+        {{ partial "thumbnail.html" (dict "item" . "cacheDomain" $.Site.Params.cacheDomain "transf" $transf "width" $imgWidth "height" $imgHeight) }}
       </div>
     {{ end }}
     </div>

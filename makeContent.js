@@ -24,8 +24,8 @@ const frontMatter = (item, config) => {
   const data = {
     title: item.name,
     slug: item.slug.toLowerCase(),
-    summary: item.summary,
-    description: item.description,
+    summary: item.summary ? item.summary.replace(/\n+/, '\n') : null,
+    description: item.description ? item.description.replace(/\n+/, '\n') : null,
     contentType: item.type,
     type: 'gallery',
     date: item.createdAt,
@@ -51,6 +51,9 @@ const frontMatter = (item, config) => {
     data.images = item.covers.map(cover => {
       return `https://${config.params.cacheDomain}/${cover.file.key}/${Math.round(Date.parse(cover.updatedAt) / 1000)}/w_768,h_768/${cover.slug.toLowerCase()}.jpg`
     })
+  }
+  if (item.id === 'root') {
+    data.linkTitle = 'Home'
   }
   clean(data)
   return JSON.stringify(data, null, 2)

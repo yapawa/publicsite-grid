@@ -1,11 +1,11 @@
 {
-  "name": "atlas",
+  "name": "yapawa-grid",
   "private": true,
   "scripts": {
     "start": "hugo server",
     "build": "hugo && npm run build:functions",
     "build:functions": "netlify-lambda build assets/lambda",
-    "server": "hugo server",
+    "server": "hugo server -w --disableFastRender",
     "content": "node makeContent.js"
   },
   "dependencies": {

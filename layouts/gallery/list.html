@@ -1,23 +1,24 @@
 {{ define "main" }}
-  gallery/list.html<br/>
-  <h2>{{ .Title }}</h2>
-  {{ .Description | plainify | safeHTML }}
-  <br/>
-  {{ .Type }} :: {{ .Kind }}
-  <div class="album-grid" data-masonry='{ "itemSelector": ".album-grid-item", "columnWidth": 272, "gutter": 5 }'>
+
+  {{ if not .IsHome }}
+    {{ partial "album-title.html" . }}
+  {{ end }}
+
+  <div class="album-grid">
     {{ range .Pages.ByWeight }}
       <div class="album-grid-item">
         <a href="{{ .Permalink }}">
           {{ $cover := index (.Params.Covers) 0 }}
           {{ if $cover }}
-            {{ partial "thumbnail.html" (dict "item" $cover "cacheDomain" $.Site.Params.cacheDomain "transf" "w_272,ar_3:2" "width" 272 "height" 181 ) }}
+            {{ partial "thumbnail.html" (dict "item" $cover "cacheDomain" $.Site.Params.cacheDomain "transf" "w_272,h_181,c_crop" "width" 272 "height" 181 ) }}
           {{ else }}
             <img src="https://placeimg.com/272/181/arch/grayscale/{{ .Slug }}" width="272" height="181">
           {{ end }}
-          <div class="title">
-            {{ .Name }}
-          </div>
         </a>
+        <div class="album-info">
+          <h2><a href="{{ .Permalink }}">{{ .Name }}</a></h2>
+          <div class="album-description">{{ .Summary | replaceRE "\n+" "<br/>" | safeHTML }}</div>
+        </div>
       </div>
     {{ end }}
   </div>

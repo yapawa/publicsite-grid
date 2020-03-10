@@ -1,0 +1,28 @@
+{{ define "main" }}
+
+  <article>
+    {{ partial "album-title.html" . }}
+
+    {{- $width := 350 -}}
+    {{- $gutter := 5 -}}
+    {{ $dataJ := getJSON $.Site.Params.api "albums/" .Params.albumId "/content" }}
+    <div class="photo-grid">
+    {{- range $dataJ -}}
+      {{- $imgWidth := $width -}}
+      {{- $transf := printf "w_%d" $imgWidth -}}
+      {{- $class := "horizontal" }}
+      {{ if gt (div .width .height) 3 }}
+        {{- $transf = printf "h_%d" 90 -}}
+        {{ $class = "panorama" }}
+      {{ end }}
+      {{ if lt (div .width .height) 1 }}
+        {{ $class = "vertical" }}
+      {{ end }}
+      {{- $imgHeight := math.Round (div (mul $imgWidth .height) .width) -}}
+      <div class="photo-grid-item {{ $class }}">
+        {{ partial "thumbnail.html" (dict "item" . "cacheDomain" $.Site.Params.cacheDomain "transf" $transf "width" $imgWidth "height" $imgHeight) }}
+      </div>
+    {{ end }}
+    </div>
+  </article>
+{{ end }}

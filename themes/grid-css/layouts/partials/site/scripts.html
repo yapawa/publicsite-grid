@@ -1,0 +1,6 @@
+{{ $app := resources.Get "js/app.js" }}
+{{ $masonry := resources.Get "js/vendor/masonry.pkgd-4.2.2.js" }}
+
+{{ $js := slice $app $masonry | resources.Concat "bundle.js" | minify | fingerprint "sha512" }}
+
+<script type="text/javascript" src="{{ $js.Permalink }}" integrity="{{ $js.Data.Integrity }}"></script>

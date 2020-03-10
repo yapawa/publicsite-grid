@@ -1,0 +1,107 @@
+.site-header
+  text-align: center
+
+  &.is-home
+    margin-bottom: 2em
+    margin-top: 2em
+
+  .text
+    .site-tagline
+      color: inherit
+      font-size: 10px
+      letter-spacing: 2px
+      margin-bottom: 1.5em
+      text-transform: uppercase
+
+    .site-title
+      font-size: 36px
+      font-weight: $font-weight
+      letter-spacing: 4px
+      line-height: 1.5
+      text-transform: uppercase
+
+.album-header
+  margin-bottom: 2em
+  text-align: center
+
+  .album-description
+    font-size: 1.2em
+    line-height: 1.5em
+    margin: 0 auto 1.5em
+    min-width: 360px
+    width: 70%
+
+.album-info
+  text-align: center
+
+  h2
+    margin-bottom: .5em
+    margin-top: .5em
+
+  .album-description
+    font-size: 1.1em
+    line-height: 1.2em
+
+    p
+      line-height: 1em
+      margin: 0
+
+.album-grid
+  display: flex
+  flex-wrap: wrap
+
+.album-grid-item
+  margin: 0 auto 15px
+  padding-left: 5px
+  padding-right: 5px
+  width: 272px
+
+.site-footer
+  .copyright
+    text-align: right
+
+.photo-grid
+  display: grid
+  grid-auto-flow: dense
+  grid-auto-rows: 90px
+  grid-gap: 10px
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))
+
+.photo-grid-item
+  img
+    border-radius: 4px
+    height: 100%
+    object-fit: cover
+    width: 100%
+
+  @media (max-width: 480px)
+    &.horizontal
+      grid-row-end: span 2
+
+    &.vertical
+      grid-row-end: span 5
+
+  @media (min-width: 480px)
+    // &:first-child
+    //   grid-area: 1 / 1 / span 2 / span 2
+    //
+    // &:nth-child(3n)
+    //   grid-column: span 2
+
+    &.horizontal
+      grid-row-end: span 2
+
+    &.vertical
+      grid-row-end: span 4
+
+    &.panorama
+      grid-column-end: span 2
+
+@media screen and (max-width: 550px)
+  .album-grid-item
+    padding: 0
+    width: 100%
+
+    img
+      height: auto
+      width: 100%

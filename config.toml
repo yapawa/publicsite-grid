@@ -11,6 +11,7 @@ disallow_search_engines = false # set robots.txt to disallow everything
 api = "https://d14cda90rt1dr5.cloudfront.net/api/"
 cacheDomain = "d1tcprt12td1mo.cloudfront.net"
 tagline = "Spare Time Amateur Photographer"
+themeColor = "white"
 
 # add redirects/headers
 [outputs]

@@ -5,7 +5,7 @@
   {{ end }}
 
   <div class="album-grid">
-    {{ range .Pages.ByWeight }}
+    {{ range where .Pages.ByWeight "Type" "gallery" }}
       <div class="album-grid-item">
         <a href="{{ .Permalink }}">
           {{ $cover := index (.Params.Covers) 0 }}

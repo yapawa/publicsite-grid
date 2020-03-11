@@ -71,6 +71,8 @@
 
 .photo-grid-item
   img
+    background: transparent url($loader) no-repeat scroll center center
+    background-color: $ghost-color
     border-radius: 4px
     height: 100%
     object-fit: cover
@@ -81,7 +83,7 @@
       grid-row-end: span 3
 
     &.vertical
-      grid-row-end: span 7
+      grid-row-end: span 5
 
     &.panorama
       grid-column-end: span 2

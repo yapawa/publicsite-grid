@@ -1,6 +1,12 @@
 {{ $app := resources.Get "js/app.js" }}
-{{ $masonry := resources.Get "js/vendor/masonry.pkgd-4.2.2.js" }}
+{{ $lazymain := resources.Get "js/vendor/lazysizes.js" }}
+{{ $lsar := resources.Get "js/vendor/ls.aspectratio.js" }}
+{{ $lazy := slice $lazymain $lsar | resources.Concat "lazy.js" }}
 
-{{ $js := slice $app $masonry | resources.Concat "bundle.js" | minify | fingerprint "sha512" }}
-
-<script type="text/javascript" src="{{ $js.Permalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+{{ if hugo.IsProduction }}
+  {{ $js := slice $app $lazy | resources.Concat "bundle.js" | minify | fingerprint "sha512" }}
+  <script type="text/javascript" src="{{ $js.Permalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+{{ else }}
+  <script type="text/javascript" src="{{ $app.Permalink }}"></script>
+  <script type="text/javascript" src="{{ $lazy.Permalink }}"></script>
+{{ end }}

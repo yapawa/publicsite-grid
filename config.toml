@@ -3,7 +3,8 @@ languageCode = "en-gb"
 title = "Daniel Muller"
 
 enableRobotsTXT = true
-disableAliases = true
+disableAliases = false
+disableKinds = ['tags', 'categories']
 theme = "grid"
 
 [params]

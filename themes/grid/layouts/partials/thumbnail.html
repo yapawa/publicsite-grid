@@ -7,7 +7,7 @@
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_2.5/{{ .item.slug | safeURL }}.webp 2.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_3/{{ .item.slug | safeURL }}.webp 3x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_4/{{ .item.slug | safeURL }}.webp 4x"
-      data-aspectratio="{{ div .width .height }}"
+      data-aspectratio="{{ .width }}/{{ .height }}"
   >
   <source
     type="image/jpeg"
@@ -17,13 +17,13 @@
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_2.5/{{ .item.slug | safeURL }}.jpg 2.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_3/{{ .item.slug | safeURL }}.jpg 3x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_4/{{ .item.slug | safeURL }}.jpg 4x"
-      data-aspectratio="{{ div .width .height }}"
+      data-aspectratio="{{ .width }}/{{ .height }}"
   >
   <img
     src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
     data-src="https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }}/{{ .item.slug | safeURL }}.jpg"
     class="lazyload"
-    data-aspectratio="{{ div .width .height }}"
+    data-aspectratio="{{ .width }}/{{ .height }}"
     data-sizes="auto"
     alt="{{ .item.name }}"
     width="{{ .width }}"

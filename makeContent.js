@@ -34,7 +34,10 @@ const frontMatter = (item, config) => {
     draft: false,
     albumId: item.id,
     weight: item.weight,
-    covers: []
+    covers: [],
+    aliases: [
+      `/${item.type === 'collection' ? 'sets' : 'albums'}/${item.slug}/`
+    ]
   }
   if (item.covers) {
     data.covers = item.covers.map(cover => {

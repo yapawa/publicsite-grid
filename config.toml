@@ -17,6 +17,7 @@ themeColor = "white"
 # add redirects/headers
 [outputs]
 home = ["HTML", "RSS", "REDIRECTS", "HEADERS"]
+page = ["HTML", "RSS", "JSON"]
 
 # remove .{ext} from text/netlify
 [mediaTypes."text/netlify"]

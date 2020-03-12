@@ -13,7 +13,8 @@
             {{ partial "thumbnail.html" (dict "item" $cover "cacheDomain" $.Site.Params.cacheDomain "transf" "w_272,h_181,c_crop" "width" 272 "height" 181 ) }}
           {{ else }}
             <div class="placeholder">
-              <img src="/placeholder.svg">
+              {{ $placeholderImg := resources.Get "img/placeholder.svg" }}
+              <img src="{{ $placeholderImg.Permalink }}">
             </div>
           {{ end }}
         </a>

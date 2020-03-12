@@ -1,5 +1,5 @@
-{{ $normalize := resources.Get "css/vendor/normalize-8.0.1.css" }}
-{{ $app := resources.Get (printf "sass/%s.sass" .Site.Params.themeColor) | toCSS }}
+{{ $normalize := resources.Get "css/vendor/normalize-8.0.1.css" | toCSS (dict "targetPath" "css/normalize.css") }}
+{{ $app := resources.Get (printf "sass/%s.sass" .Site.Params.themeColor) | resources.ExecuteAsTemplate "app.scss" . | toCSS (dict "targetPath" "css/app.css") }}
 
 <link href="https://fonts.googleapis.com/css?family=Lato:400,900&display=swap" rel="stylesheet">
 {{ if hugo.IsProduction }}

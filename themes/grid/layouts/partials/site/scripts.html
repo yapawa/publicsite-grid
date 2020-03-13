@@ -14,11 +14,11 @@
   <script type="text/javascript">
     function initPhotoSwipefromDOM (gallerySelector, photoList) {
 
-    var closest = function closest(el, fn) {
-      return el && ( fn(el) ? el : closest(el.parentNode, fn) );
-    }
-    
-    const onThumbnailsClick = function (e) {
+      var closest = function closest(el, fn) {
+        return el && ( fn(el) ? el : closest(el.parentNode, fn) );
+      }
+      
+      const onThumbnailsClick = function (e) {
         e = e || window.event
         e.preventDefault ? e.preventDefault() : e.returnValue = false
         
@@ -32,7 +32,7 @@
             return
         }
         const index = clickedListItem.getAttribute('data-pswp-uid') - 1
-        openPhotoSwipe(index, photoList)
+        openPhotoSwipe(index, photoList, galleryElements)
       }
 
       const galleryElements = document.querySelectorAll( gallerySelector )
@@ -43,16 +43,19 @@
       }
     }
 
-    const openPhotoSwipe = function (index, photoList) {
+    const openPhotoSwipe = function (index, photoList, itemsList) {
       var pswpElement = document.querySelectorAll('.pswp')[0]
 
       let items = []
       for (let i=0; i<photoList.length; i++) {
+        const source = itemsList[i].querySelector('picture:first-child > img').currentSrc
+        const format = source.split('.').pop()
         let el = photoList[i]
         const date = new Date(el.updatedAt)
         const version = Math.round(date.getTime() / 1000)
         items.push({
-          src: 'https://{{ $.Site.Params.cacheDomain }}/' + el.file.key + '/' + version.toString() + '/src/' + el.slug + '.jpg',
+          msrc: source,
+          src: 'https://{{ $.Site.Params.cacheDomain }}/' + el.file.key + '/' + version.toString() + '/src/' + el.slug + '.' + format,
           w: el.width,
           h: el.height
         })

@@ -32,7 +32,7 @@
             return
         }
         const index = clickedListItem.getAttribute('data-pswp-uid') - 1
-        openPhotoSwipe(index, photoList, galleryElements)
+        openPhotoSwipe(index, photoList, galleryElements, false, false)
       }
 
       const galleryElements = document.querySelectorAll( gallerySelector )
@@ -41,18 +41,59 @@
         galleryElements[i].setAttribute('data-pswp-uid', i+1)
         galleryElements[i].onclick = onThumbnailsClick
       }
+
+      // Parse URL and open gallery if it contains #&pid=3&gid=1
+      var hashData = photoswipeParseHash();
+      if (hashData.pid && hashData.gid) {
+        openPhotoSwipe( hashData.pid, photoList, galleryElements, true, true );
+      }
     }
 
-    const openPhotoSwipe = function (index, photoList, itemsList) {
+    // parse picture index and gallery index from URL (#&pid=1&gid=2)
+    const photoswipeParseHash = function() {
+      let hash = window.location.hash.substring(1)
+      let params = {};
+
+      if(hash.length < 5) {
+        return params;
+      }
+
+      let vars = hash.split('&')
+      for (let i = 0; i < vars.length; i++) {
+        if(!vars[i]) {
+          continue
+        }
+        let pair = vars[i].split('=')
+        if(pair.length < 2) {
+          continue;
+        }
+        params[pair[0]] = pair[1]
+      }
+
+      if(params.gid) {
+        params.gid = parseInt(params.gid, 10)
+      }
+
+      return params
+    }
+
+    const openPhotoSwipe = function (index, photoList, itemsList, disableAnimation, fromURL) {
       var pswpElement = document.querySelectorAll('.pswp')[0]
 
       let items = []
       let selected = itemsList[index].querySelector('picture:first-child > img').currentSrc
-      const format = selected.split('.').pop()
+      let format = null
+      if (selected) {
+        format = selected.split('.').pop()
+      }
 
       for (let i=0; i<photoList.length; i++) {
         let source = itemsList[i].querySelector('picture:first-child > img').currentSrc
-        if (!source.match(/^https?:\/\//)) {
+        if (source.match(/^https?:\/\//)) {
+          if (!format) {
+            format = selected.split('.').pop()
+          }
+        } else {
           source = null
         }
         let el = photoList[i]
@@ -60,7 +101,7 @@
         const version = Math.round(date.getTime() / 1000)
         items.push({
           msrc: source || null,
-          src: 'https://{{ $.Site.Params.cacheDomain }}/' + el.file.key + '/' + version.toString() + '/src/' + el.slug + '.' + format,
+          src: 'https://{{ $.Site.Params.cacheDomain }}/' + el.file.key + '/' + version.toString() + '/src/' + el.slug + '.' + (format || 'jpg'),
           w: el.width,
           h: el.height
         })
@@ -73,12 +114,39 @@
         // for example:
         getThumbBoundsFn: function(index) {
           var thumbnail = document.querySelectorAll("[data-pswp-uid='"+(index+1)+"']")[0]
-          console.log(thumbnail)
           pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
           rect = thumbnail.getBoundingClientRect();
           return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
         },
         index: index // start at first slide
+      }
+
+      // PhotoSwipe opened from URL
+      if (fromURL) {
+        if (options.galleryPIDs) {
+          // parse real index when custom PIDs are used
+          // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+          for (let j = 0; j < items.length; j++) {
+            if(items[j].pid === index) {
+              options.index = j
+              break
+            }
+          }
+        } else {
+          // in URL indexes start from 1
+          options.index = parseInt(index, 10) - 1
+        }
+      } else {
+        options.index = parseInt(index, 10)
+      }
+
+      // exit if index not found
+      if( isNaN(options.index) ) {
+        return
+      }
+
+      if(disableAnimation) {
+        options.showAnimationDuration = 0;
       }
 
       // Initializes and opens PhotoSwipe

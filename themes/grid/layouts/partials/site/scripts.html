@@ -47,14 +47,19 @@
       var pswpElement = document.querySelectorAll('.pswp')[0]
 
       let items = []
+      let selected = itemsList[index].querySelector('picture:first-child > img').currentSrc
+      const format = selected.split('.').pop()
+
       for (let i=0; i<photoList.length; i++) {
-        const source = itemsList[i].querySelector('picture:first-child > img').currentSrc
-        const format = source.split('.').pop()
+        let source = itemsList[i].querySelector('picture:first-child > img').currentSrc
+        if (!source.match(/^https?:\/\//)) {
+          source = null
+        }
         let el = photoList[i]
         const date = new Date(el.updatedAt)
         const version = Math.round(date.getTime() / 1000)
         items.push({
-          msrc: source,
+          msrc: source || null,
           src: 'https://{{ $.Site.Params.cacheDomain }}/' + el.file.key + '/' + version.toString() + '/src/' + el.slug + '.' + format,
           w: el.width,
           h: el.height

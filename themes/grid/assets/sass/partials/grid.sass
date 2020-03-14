@@ -12,13 +12,6 @@
   margin: 0 10px 15px
   width: 272px
 
-  .placeholder
-    box-shadow: 2px 2px 8px 2px $placeholder-color
-
-    img
-      height: 120px
-      width: 120px
-
   img
     @extend %picture
     box-shadow: 2px 2px 8px 2px $placeholder-color
@@ -49,14 +42,10 @@
       &.row-span-#{$i}
         grid-row-end: span #{$i}
 
-@media screen and (max-width: 480px)
+@media screen and (max-width: 479px)
   .album-grid-item
     padding: 0
     width: 100%
-
-    .placeholder
-      padding-bottom: 8%
-      padding-top: 8%
 
     img
       height: auto

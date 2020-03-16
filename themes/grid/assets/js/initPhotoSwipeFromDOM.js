@@ -121,7 +121,8 @@ const openPhotoSwipe = async function (index, photoList, itemsList, disableAnima
       const rect = thumbnail.getBoundingClientRect()
       return { x: rect.left, y: rect.top + pageYScroll, w: rect.width }
     },
-    index: index // start at first slide
+    index: index, // start at first slide
+    shareEl: false
   }
 
   // PhotoSwipe opened from URL

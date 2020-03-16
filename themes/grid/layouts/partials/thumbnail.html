@@ -3,9 +3,7 @@
     type="image/webp"
     media="(min-width: 480px)"
     data-srcset="https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }}/{{ .item.slug | safeURL }}.webp,
-      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_1.5/{{ .item.slug | safeURL }}.webp 1.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_2/{{ .item.slug | safeURL }}.webp 2x,
-      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_2.5/{{ .item.slug | safeURL }}.webp 2.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_3/{{ .item.slug | safeURL }}.webp 3x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_4/{{ .item.slug | safeURL }}.webp 4x"
     data-aspectratio="{{ .width }}/{{ .height }}"
@@ -14,9 +12,7 @@
     type="image/webp"
     media="(max-width: 479px)"
     data-srcset="https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500/{{ .item.slug | safeURL }}.webp,
-      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_1.5/{{ .item.slug | safeURL }}.webp 1.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_2/{{ .item.slug | safeURL }}.webp 2x,
-      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_2.5/{{ .item.slug | safeURL }}.webp 2.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_3/{{ .item.slug | safeURL }}.webp 3x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_4/{{ .item.slug | safeURL }}.webp 4x"
     data-aspectratio="{{ .width }}/{{ .height }}"
@@ -25,9 +21,7 @@
     type="image/jpeg"
     media="(min-width: 480px)"
     data-srcset="https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }}/{{ .item.slug | safeURL }}.jpg,
-      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_1.5/{{ .item.slug | safeURL }}.jpg 1.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_2/{{ .item.slug | safeURL }}.jpg 2x,
-      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_2.5/{{ .item.slug | safeURL }}.jpg 2.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_3/{{ .item.slug | safeURL }}.jpg 3x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_4/{{ .item.slug | safeURL }}.jpg 4x"
     data-aspectratio="{{ .width }}/{{ .height }}"
@@ -36,9 +30,7 @@
     type="image/jpeg"
     media="(max-width: 479px)"
     data-srcset="https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500/{{ .item.slug | safeURL }}.jpg,
-      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_1.5/{{ .item.slug | safeURL }}.jpg 1.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_2/{{ .item.slug | safeURL }}.jpg 2x,
-      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_2.5/{{ .item.slug | safeURL }}.jpg 2.5x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_3/{{ .item.slug | safeURL }}.jpg 3x,
       https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/w_500,dpr_4/{{ .item.slug | safeURL }}.jpg 4x"
     data-aspectratio="{{ .width }}/{{ .height }}"

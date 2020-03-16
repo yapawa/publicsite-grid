@@ -104,11 +104,15 @@ const openPhotoSwipe = async function (index, photoList, itemsList, disableAnima
     const version = Math.round(date.getTime() / 1000)
     items.push({
       msrc: source || null,
-      src: 'https://{{ $.Site.Params.cacheDomain }}/' + el.file.key + '/' + version.toString() + '/src/' + el.slug + '.' + (format || 'jpg'),
       w: el.width,
       h: el.height,
       title: el.description,
-      name: el.name
+      name: el.name,
+      domain: '{{ $.Site.Params.cacheDomain }}',
+      key: el.file.key,
+      version: version.toString(),
+      slug: el.slug,
+      format: (format || 'jpg')
     })
   }
   // define options (if needed)
@@ -124,7 +128,13 @@ const openPhotoSwipe = async function (index, photoList, itemsList, disableAnima
       return { x: rect.left, y: rect.top + pageYScroll, w: rect.width }
     },
     index: index, // start at first slide
-    shareEl: false
+    shareEl: false,
+    zoomEl: false,
+    maxSpreadZoom: 1,
+    getDoubleTapZoom: function (isMouseclick, item) {
+      return item.initalZoomLevel
+    },
+    pinchToClose: false
   }
 
   // PhotoSwipe opened from URL
@@ -155,8 +165,46 @@ const openPhotoSwipe = async function (index, photoList, itemsList, disableAnima
     options.showAnimationDuration = 0
   }
 
+  let firstResize = true
+  let imageSrcWillChange = false
+  let previousWidth = 0
+  let previousHeight = 0
+  const sizeStep = 500
+
   // Initializes and opens PhotoSwipe
   var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options)
+  gallery.listen('beforeResize', function () {
+    const width = Math.ceil(gallery.viewportSize.x / sizeStep) * sizeStep
+    const height = Math.ceil(gallery.viewportSize.y / sizeStep) * sizeStep
+
+    if (previousWidth !== width) {
+      previousWidth = width
+      imageSrcWillChange = true
+    }
+    if (previousHeight !== height) {
+      previousHeight = height
+      imageSrcWillChange = true
+    }
+    if (imageSrcWillChange && !firstResize) {
+      gallery.invalidateCurrItems()
+    }
+    if (firstResize) {
+      firstResize = false
+    }
+    imageSrcWillChange = false
+  })
+
+  gallery.listen('gettingData', function (index, item) {
+    const width = Math.ceil(gallery.viewportSize.x / sizeStep) * sizeStep
+    const height = Math.ceil(gallery.viewportSize.y / sizeStep) * sizeStep
+    const dpr = window.devicePixelRatio
+    let transf = 'c_cover,w_' + width + ',h_' + height
+    if (dpr > 1) {
+      transf = transf + ',dpr_' + dpr
+    }
+    item.src = 'https://' + item.domain + '/' + item.key + '/' + item.version + '/' + transf + '/' + item.slug + '.' + item.format
+  })
+
   gallery.init()
 }
 

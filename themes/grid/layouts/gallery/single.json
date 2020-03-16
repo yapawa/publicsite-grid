@@ -1,0 +1,7 @@
+{{ $dataJ := getJSON $.Site.Params.api "albums/" .Params.albumId "/content" }}
+[
+{{- range $dataJ -}}
+  {{ . | jsonify }},
+{{ end }}
+{}
+]

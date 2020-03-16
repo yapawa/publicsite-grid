@@ -1,6 +1,7 @@
 .placeholder
   align-items: center
   background-color: $placeholder-color
+  box-shadow: 2px 2px 8px 2px $placeholder-color
   display: flex
   height: 181px
   justify-content: center
@@ -10,12 +11,10 @@
     height: 120px
     width: 120px
 
-@media screen and (max-width: 550px)
+@media screen and (max-width: 479px)
   .placeholder
-    align-items: center
-    background-color: $placeholder-color
-    display: flex
-    justify-content: center
+    padding-bottom: 8%
+    padding-top: 8%
     width: 100%
 
     img

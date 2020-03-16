@@ -1,0 +1,9 @@
+@import 'partials/{{ .Site.Params.themeColor }}'
+// {{ $loader:= resources.Get (printf "img/loader-%s.gif" .Site.Params.themeColor) }}
+$loader: '{{ $loader.Permalink }}'
+
+@import 'partials/base'
+@import 'partials/site'
+@import 'partials/breadcrumbs'
+@import 'partials/grid'
+@import 'partials/placeholder'

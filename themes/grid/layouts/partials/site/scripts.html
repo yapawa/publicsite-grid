@@ -1,12 +1,15 @@
 {{ $app := resources.Get "js/app.js" }}
 {{ $lazymain := resources.Get "js/vendor/lazysizes.js" }}
 {{ $lsar := resources.Get "js/vendor/ls.aspectratio.js" }}
-{{ $lazy := slice $lazymain $lsar | resources.Concat "lazy.js" }}
 
-{{ if hugo.IsProduction }}
-  {{ $js := slice $app $lazy | resources.Concat "bundle.js" | minify | fingerprint "sha512" }}
-  <script type="text/javascript" src="{{ $js.Permalink }}" integrity="{{ $js.Data.Integrity }}"></script>
-{{ else }}
-  <script type="text/javascript" src="{{ $app.Permalink }}"></script>
-  <script type="text/javascript" src="{{ $lazy.Permalink }}"></script>
+{{ $js := slice $app $lazymain $lsar | resources.Concat "js/bundle.js" | minify | fingerprint "sha512" }}
+
+{{ $pswpMain := resources.Get "js/vendor/photoswipe-4.1.3/photoswipe.js" }}
+{{ $pswpUI := resources.Get "js/vendor/photoswipe-4.1.3/photoswipe-ui-default.js" }}
+{{ $pswpInit := resources.Get "js/initPhotoSwipeFromDOM.js" | resources.ExecuteAsTemplate "initPhotoSwipeFromDOM.js" . }}
+{{ $pswp := slice $pswpMain $pswpUI $pswpInit | resources.Concat "js/pswp.js" | minify | fingerprint "sha512" }}
+
+<script type="text/javascript" src="{{ $js.Permalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+{{ if and (eq .Kind "page") (eq .Type "gallery") (eq .Params.contentType "album" ) }}
+  <script type="text/javascript" src="{{ $pswp.Permalink }}" integrity="{{ $pswp.Data.Integrity }}"></script>
 {{ end }}

@@ -7,6 +7,8 @@
 {{ if and (eq .Kind "page") (eq .Type "gallery") (eq .Params.contentType "album" ) }}
   {{ $pswpMain := resources.Get "sass/vendor/photoswipe-4.1.3/main.scss" | toCSS (dict "targetPath" "pswp/pswpMain.css") }}
   {{ $pswpUI := resources.Get "sass/vendor/photoswipe-4.1.3/default-skin/default-skin.scss" | toCSS (dict "targetPath" "pswp/pswpUI.css") }}
-  {{ $pswp := slice $pswpMain $pswpUI | resources.Concat "pswp/pswp.css" | postCSS (dict "config" "postcss.config.js") | minify | fingerprint "sha512" }}
+  {{ $pswpUILocal := resources.Get "sass/partials/photoswipe.sass" | toCSS (dict "targetPath" "pswp/pswpUILocal.css") }}
+
+  {{ $pswp := slice $pswpMain $pswpUI $pswpUILocal | resources.Concat "pswp/pswp.css" | postCSS (dict "config" "postcss.config.js") | minify | fingerprint "sha512" }}
   <link rel="stylesheet" href="{{ $pswp.Permalink }}" integrity="{{ $pswp.Data.Integrity }}"/>
 {{ end }}

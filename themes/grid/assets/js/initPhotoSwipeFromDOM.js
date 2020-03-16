@@ -106,13 +106,15 @@ const openPhotoSwipe = async function (index, photoList, itemsList, disableAnima
       msrc: source || null,
       src: 'https://{{ $.Site.Params.cacheDomain }}/' + el.file.key + '/' + version.toString() + '/src/' + el.slug + '.' + (format || 'jpg'),
       w: el.width,
-      h: el.height
+      h: el.height,
+      title: el.description,
+      name: el.name
     })
   }
   // define options (if needed)
   var options = {
     preload: [2, 5],
-    barsSize: { top: 0, bottom: 'auto' },
+    barsSize: { top: 0, bottom: 0 },
     // optionName: 'option value'
     // for example:
     getThumbBoundsFn: function (index) {

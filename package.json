@@ -3,8 +3,7 @@
   "private": true,
   "scripts": {
     "start": "hugo server",
-    "build": "hugo && npm run build:functions",
-    "build:functions": "netlify-lambda build assets/lambda",
+    "build": "npm run content && hugo --minify --ignoreCache",
     "server": "hugo server -w --disableFastRender --forceSyncStatic --ignoreCache --path-warnings",
     "content": "node makeContent.js"
   },

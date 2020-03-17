@@ -1,4 +1,4 @@
-# redirects for Netlify - https://www.netlify.com/docs/redirects/
+# redirects for Cloudfront
 {{- range $p := .Site.Pages -}}
 {{- range .Aliases }}
 {{ . }} {{ $p.RelPermalink -}}

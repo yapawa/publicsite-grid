@@ -20,20 +20,24 @@ home = ["HTML", "RSS", "REDIRECTS", "HEADERS"]
 page = ["HTML", "RSS", "JSON"]
 
 # remove .{ext} from text/netlify
-[mediaTypes."text/netlify"]
+[mediaTypes."text/redirects"]
+suffixes = [""]
+delimiter = ""
+
+[mediaTypes."text/headers"]
 suffixes = [""]
 delimiter = ""
 
 # add output format for netlify _redirects
 [outputFormats.REDIRECTS]
-mediatype = "text/netlify"
+mediatype = "text/redirects"
 baseName = "_redirects"
 isPlainText = true
 notAlternative = true
 
 # add output format for netlify _headers
 [outputFormats.HEADERS]
-mediatype = "text/netlify"
+mediatype = "text/headers"
 baseName = "_headers"
 isPlainText = true
 notAlternative = true

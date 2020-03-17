@@ -1,4 +1,5 @@
 <div class="album-header">
+  {{- with .Params.event -}}<div class="album-title"><h2>{{ . }}</h2></div>{{- end -}}
   <div class="album-title"><h1>{{ .Title }}</h1></div>
   <div class="album-description">{{ .Description | replaceRE "\n+" "<br/>"  | safeHTML }}</div>
 </div>

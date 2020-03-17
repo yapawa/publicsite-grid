@@ -23,6 +23,7 @@ const clearContent = (path) => {
 const frontMatter = (item, config) => {
   const data = {
     title: item.name,
+    event: item.event,
     slug: item.slug.toLowerCase(),
     summary: item.summary ? item.summary.replace(/\n+/, '\n') : null,
     description: item.description ? item.description.replace(/\n+/, '\n') : null,

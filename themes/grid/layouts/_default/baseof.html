@@ -4,7 +4,7 @@
 
         {{ block "site/meta" . }}{{ partial "site/meta.html" . }}{{ end }}
 
-        <title>{{ block "title" . }}{{ .Site.Title }} {{ with .Params.Title }} | {{ . }}{{ end }}{{ end }}</title>
+        <title>{{ block "title" . }}{{ partial "site/title.html" . }}{{ end }}</title>
 
         {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
             <meta name="robotos" content="index, follow">

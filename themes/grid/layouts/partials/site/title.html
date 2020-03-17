@@ -1,0 +1,14 @@
+{{ $title := .Site.Title }}
+{{- if .Site.Params.pageTitlePrefix -}}
+  {{ $title = .Site.Params.pageTitlePrefix }}
+{{- end -}}
+
+{{ if .Params.event }}
+  {{ $title = printf "%s | %s" $title .Params.event }}
+{{ end }}
+
+{{ if .Params.Title }}
+  {{ $title = printf "%s | %s" $title .Params.Title }}
+{{ end }}
+
+{{ return $title }}

@@ -7,7 +7,14 @@ const contentPath = 'content'
 const toml = require('toml')
 
 const parseConfig = () => {
-  return toml.parse(fs.readFileSync('./config.toml'))
+  const hugoConfig = toml.parse(fs.readFileSync('./config.toml'))
+  if (process.env.HUGO_PARAMS_API) {
+    hugoConfig.params.api = process.env.HUGO_PARAMS_API
+  }
+  if (process.env.HUGO_PARAMS_CACHEDOMAIN) {
+    hugoConfig.params.cacheDomain = process.env.HUGO_PARAMS_CACHEDOMAIN
+  }
+  return hugoConfig
 }
 
 const getData = async (api) => {

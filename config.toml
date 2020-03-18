@@ -1,6 +1,6 @@
 baseURL = "/"
 languageCode = "en-gb"
-title = "Daniel Muller"
+title = ""
 
 enableRobotsTXT = true
 disableAliases = true
@@ -9,9 +9,9 @@ theme = "grid"
 
 [params]
 disallow_search_engines = false # set robots.txt to disallow everything
-api = "https://d14cda90rt1dr5.cloudfront.net/api/"
-cacheDomain = "d1tcprt12td1mo.cloudfront.net"
-tagline = "Spare Time Amateur Photographer"
+api = ""
+cacheDomain = ""
+tagline = ""
 themeColor = "white"
 
 # add redirects/headers

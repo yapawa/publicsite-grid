@@ -2,10 +2,9 @@
   "name": "yapawa-grid",
   "private": true,
   "scripts": {
-    "start": "hugo server",
-    "build": "npm run content && hugo --minify --ignoreCache",
-    "server": "hugo server -w --disableFastRender --forceSyncStatic --ignoreCache --path-warnings",
-    "content": "node makeContent.js"
+    "build": "npm run content && dotenv hugo -- --minify --ignoreCache",
+    "server": "dotenv hugo server -- -w --disableFastRender --forceSyncStatic --ignoreCache --path-warnings",
+    "content": "node -r dotenv/config makeContent.js"
   },
   "dependencies": {
     "autoprefixer": "^9.7.4",
@@ -13,6 +12,8 @@
     "postcss-cli": "^7.1.0"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
+    "dotenv-cli": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.20.1",

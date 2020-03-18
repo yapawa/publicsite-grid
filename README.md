@@ -17,6 +17,10 @@ HUGO_PARAMS_API="https://admindomain/api/"
 HUGO_PARAMS_CACHEDOMAIN="Thumbnail.Cache.Domain"
 HUGO_PARAMS_TAGLINE="Site Tagline"
 HUGO_PARAMS_THEMECOLOR="white"
+AWS_PROFILE=awsprofile
+AWS_REGION=aws-region
+S3_BUCKET=bucketName
+DISTRIBUTION=CFid
 ```
 * __HUGO_TITLE__: Title of the site
 * __HUGO_PARAMS_PAGE_TITLE_PREFIX__: Title to use in the &lttitle&gt tag. Defaults to _HUGO_TITLE_

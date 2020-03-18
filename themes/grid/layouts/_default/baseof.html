@@ -6,7 +6,7 @@
 
         <title>{{ block "title" . }}{{ partial "site/title.html" . }}{{ end }}</title>
 
-        {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+        {{ if hugo.IsProduction  }}
             <meta name="robotos" content="index, follow">
         {{ else }}
             <meta name="robots" content="noindex, nofollow">
@@ -20,7 +20,7 @@
         {{- template "_internal/opengraph.html" . -}}
         {{- template "_internal/schema.html" . -}}
         {{- template "_internal/twitter_cards.html" . -}}
-        {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+        {{ if hugo.IsProduction }}
             {{ template "_internal/google_analytics_async.html" . }}
         {{ end }}
     </head>

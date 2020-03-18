@@ -1,4 +1,6 @@
 # redirects for Cloudfront
+{{- $url := urls.Parse .Site.Params.api }}
+/admin/ {{ $url.Scheme }}://{{ $url.Host }}/
 {{- range $p := .Site.Pages -}}
 {{- range .Aliases }}
 {{ . }} {{ $p.RelPermalink -}}

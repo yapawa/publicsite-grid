@@ -26,7 +26,7 @@
     </head>
     <body>
 
-        {{ if not .IsHome }}
+        {{ if and (not .IsHome) (not (eq .Kind "404")) }}
           {{ partial "breadcrumb.html" . }}
         {{ end }}
 

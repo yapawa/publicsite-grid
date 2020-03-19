@@ -1,8 +1,27 @@
 {{ define "main" }}
-
-    <article>
-        <h1>Page Not Found!</h1>
-        <p>The page you requested could not be found.</p>
-    </article>
-
+  <article class="album-grid">
+    <div class="message">
+      <h1>Page Not Found</h1>
+      <p>The content you requested could not be found</p>
+      <p>Try one of the following content instead</p>
+    </div>
+  </article>
+  {{ $home := .Site.GetPage "/" }}
+  <div class="album-grid">
+  {{ range where $home.Pages.ByWeight "Type" "gallery" }}
+    <div class="album-grid-item tiny">
+      <a href="{{ .Permalink }}">
+        {{ $cover := index (.Params.Covers) 0 }}
+        {{ if $cover }}
+          {{ partial "thumbnail.html" (dict "item" $cover "cacheDomain" $.Site.Params.cacheDomain "transf" "w_150,h_100,c_crop" "width" 150 "height" 100 ) }}
+        {{ else }}
+          <div class="placeholder">
+            {{ $placeholderImg := resources.Get "img/placeholder.svg" }}
+            <img src="{{ $placeholderImg.Permalink }}">
+          </div>
+        {{ end }}
+      </a>
+    </div>
+  {{ end }}
+  </div>
 {{ end }}

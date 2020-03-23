@@ -1,12 +1,14 @@
 #!/bin/bash
 
-. ./.env
+if [ -f .env ]; then
+  . ./.env
 
-if [ -n ${AWS_PROFILE+x} ]; then
-  export AWS_PROFILE=$AWS_PROFILE
-fi
-if [ -n ${AWS_REGION+x} ]; then
-  export AWS_REGION=$AWS_REGION
+  if [ -n ${AWS_PROFILE+x} ]; then
+    export AWS_PROFILE=$AWS_PROFILE
+  fi
+  if [ -n ${AWS_REGION+x} ]; then
+    export AWS_REGION=$AWS_REGION
+  fi
 fi
 
 aws s3 sync --delete --exclude "_headers" --exclude "_redirects" --cache-control "max-age=31536000" --metadata file://public/_headers --acl public-read public/ s3://$S3_BUCKET/

@@ -3,10 +3,10 @@
 if [ -f .env ]; then
   . ./.env
 
-  if [ -n ${AWS_PROFILE+x} ]; then
+  if [ -n "$AWS_PROFILE" ]; then
     export AWS_PROFILE=$AWS_PROFILE
   fi
-  if [ -n ${AWS_REGION+x} ]; then
+  if [ -n "$AWS_REGION" ]; then
     export AWS_REGION=$AWS_REGION
   fi
 fi

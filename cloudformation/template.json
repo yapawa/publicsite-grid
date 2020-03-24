@@ -1,0 +1,410 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Hugo hosting",
+  "Parameters": {
+    "domainName": {
+      "Type": "String",
+      "Default": ""
+    },
+    "hostedZoneId": {
+      "Type": "String",
+      "Default": ""
+    },
+    "certificateArn": {
+      "Type": "String",
+      "Default": ""
+    },
+    "hugoTitle": {
+      "Type": "String",
+      "Default": "A Photo Site"
+    },
+    "hugoParamsTagline": {
+      "Type": "String",
+      "Default": "just another photo gallery"
+    },
+    "hugoParamsPageTitlePrefix": {
+      "Type": "String",
+      "Default": ""
+    },
+    "hugoTheme": {
+      "Type": "String",
+      "Default": "grid"
+    },
+    "hugoParamsThemeColor": {
+      "Type": "String",
+      "Default": "white"
+    },
+    "hugoLanguageCode": {
+      "Type": "String",
+      "Default": "en"
+    },
+    "hugoParamsApi": {
+      "Type": "String",
+      "Default": ""
+    },
+    "hugoParamsCacheDomain": {
+      "Type": "String",
+      "Default": ""
+    }
+  },
+  "Resources": {
+    "S3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "BucketName": {
+          "Ref": "domainName"
+        },
+        "WebsiteConfiguration": {
+          "IndexDocument": "index.html",
+          "ErrorDocument": "404.html"
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": false,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": false,
+          "RestrictPublicBuckets": true
+        }
+      }
+    },
+    "CloudFrontDistribution": {
+      "Type": "AWS::CloudFront::Distribution",
+      "DependsOn": [
+        "S3Bucket"
+      ],
+      "Properties": {
+        "DistributionConfig": {
+          "Aliases": [
+            {
+              "Ref": "domainName"
+            }
+          ],
+          "ViewerCertificate": {
+            "AcmCertificateArn": {
+              "Ref": "certificateArn"
+            },
+            "MinimumProtocolVersion": "TLSv1.2_2018",
+            "SslSupportMethod": "sni-only"
+          },
+          "Comment": "YapawaSiteHosting",
+          "Origins": [
+            {
+              "DomainName": {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Fn::GetAtt": [
+                          "S3Bucket",
+                          "WebsiteURL"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "Id": "siteS3Bucket",
+              "CustomOriginConfig": {
+                "OriginProtocolPolicy": "http-only"
+              }
+            }
+          ],
+          "Enabled": "true",
+          "HttpVersion": "http2",
+          "DefaultCacheBehavior": {
+            "AllowedMethods": [
+              "GET",
+              "HEAD",
+              "OPTIONS"
+            ],
+            "TargetOriginId": "siteS3Bucket",
+            "ForwardedValues": {
+              "QueryString": "false"
+            },
+            "ViewerProtocolPolicy": "redirect-to-https",
+            "DefaultTTL": 86400,
+            "MaxTTL": 31536000,
+            "MinTTL": 0,
+            "Compress": true
+          },
+          "DefaultRootObject": "index.html",
+          "CustomErrorResponses": [
+            {
+              "ErrorCachingMinTTL": 10,
+              "ErrorCode": 400
+            },
+            {
+              "ErrorCachingMinTTL": 10,
+              "ErrorCode": 403
+            },
+            {
+              "ErrorCachingMinTTL": 10,
+              "ErrorCode": 404
+            }
+          ]
+        }
+      }
+    },
+    "CustomDomain": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "hostedZoneId"
+        },
+        "RecordSets": [
+          {
+            "Name": {
+              "Ref": "domainName"
+            },
+            "Type": "A",
+            "AliasTarget": {
+              "HostedZoneId": "Z2FDTNDATAQYW2",
+              "DNSName": {
+                "Fn::GetAtt": [
+                  "CloudFrontDistribution",
+                  "DomainName"
+                ]
+              }
+            }
+          },
+          {
+            "Name": {
+              "Ref": "domainName"
+            },
+            "Type": "AAAA",
+            "AliasTarget": {
+              "HostedZoneId": "Z2FDTNDATAQYW2",
+              "DNSName": {
+                "Fn::GetAtt": [
+                  "CloudFrontDistribution",
+                  "DomainName"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "CodeBuildProject": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Name": {"Ref": "AWS::StackName"},
+        "Description": "Build Yapawa Public Site",
+        "Source": {
+          "Type": "NO_SOURCE",
+          "BuildSpec": "version: 0.2\nphases:\n  install:\n    commands:\n      - curl https://github.com/gohugoio/hugo/releases/download/v0.68.1/hugo_extended_0.68.1_Linux-64bit.tar.gz -o /tmp/hugo.tar.gz -s -L\n      - tar xzfv /tmp/hugo.tar.gz -C /usr/local/bin/\n  build:\n    commands:\n      - git clone https://github.com/yapawa/publicsite-grid.git\n      - cd publicsite-grid\n      - npm ci\n      - npm run deploy"
+        },
+        "Environment": {
+          "Type": "LINUX_CONTAINER",
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "Image": "aws/codebuild/standard:4.0",
+          "EnvironmentVariables": [
+            {
+              "Name": "HUGO_TITLE",
+              "Value": {
+                "Ref": "hugoTitle"
+              }
+            },
+            {
+              "Name": "HUGO_PARAMS_TAGLINE",
+              "Value": {
+                "Ref": "hugoParamsTagline"
+              }
+            },
+            {
+              "Name": "HUGO_PARAMS_PAGETITLEPREFIX",
+              "Value": {
+                "Ref": "hugoParamsPageTitlePrefix"
+              }
+            },
+            {
+              "Name": "HUGO_THEME",
+              "Value": {
+                "Ref": "hugoTheme"
+              }
+            },
+            {
+              "Name": "HUGO_PARAMS_THEMECOLOR",
+              "Value": {
+                "Ref": "hugoParamsThemeColor"
+              }
+            },
+            {
+              "Name": "HUGO_LANGUAGECODE",
+              "Value": {
+                "Ref": "hugoLanguageCode"
+              }
+            },
+            {
+              "Name": "HUGO_PARAMS_API",
+              "Value": {
+                "Ref": "hugoParamsApi"
+              }
+            },
+            {
+              "Name": "HUGO_PARAMS_CACHEDOMAIN",
+              "Value": {
+                "Ref": "hugoParamsCacheDomain"
+              }
+            },
+            {
+              "Name": "S3_BUCKET",
+              "Value": {
+                "Ref": "S3Bucket"
+              }
+            },
+            {
+              "Name": "DISTRIBUTION",
+              "Value": {
+                "Ref": "CloudFrontDistribution"
+              }
+            }
+          ]
+        },
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "CodeBuildServiceRole",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "CodeBuildServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sts:AssumeRole"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "codebuild.amazonaws.com"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "YapawaCodeBuildAccess",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:GetObject",
+                    "s3:GetObjectAcl",
+                    "s3:PutObject",
+                    "s3:PutObjectAcl",
+                    "s3:DeleteObject"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:s3:::",
+                          {
+                            "Ref": "S3Bucket"
+                          },
+                          "/*"
+                        ]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:ListBucket"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:s3:::",
+                          {
+                            "Ref": "S3Bucket"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:*"
+                  ],
+                  "Resource": "*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "cloudfront:CreateInvalidation"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "Region": {
+      "Value": {
+        "Ref": "AWS::Region"
+      }
+    },
+    "HostingBucketName": {
+      "Description": "Hosting bucket name",
+      "Value": {
+        "Ref": "S3Bucket"
+      }
+    },
+    "CloudFrontDistributionID": {
+      "Value": {
+        "Ref": "CloudFrontDistribution"
+      }
+    },
+    "CloudFrontDomainName": {
+      "Value": {
+        "Fn::GetAtt": [
+          "CloudFrontDistribution",
+          "DomainName"
+        ]
+      }
+    },
+    "S3WebsiteURL": {
+      "Value": {
+        "Fn::GetAtt": [
+          "S3Bucket",
+          "WebsiteURL"
+        ]
+      },
+      "Description": "URL for website hosted on S3"
+    },
+    "CodeBuild": {
+      "Value": {"Ref":"CodeBuildProject"},
+      "Description": "CodeBuild Project Name"
+    }
+  }
+}

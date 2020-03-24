@@ -1,6 +1,6 @@
 {{ $title := .Site.Title }}
 {{- if .Site.Params.pageTitlePrefix -}}
-  {{ $title = .Site.Params.pageTitlePrefix }}
+  {{ $title = printf "%s - %s" .Site.Params.pageTitlePrefix $title }}
 {{- end -}}
 
 {{ if .Params.event }}

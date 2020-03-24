@@ -13,6 +13,7 @@ api = ""
 cacheDomain = ""
 tagline = ""
 themeColor = "white"
+pageTitlePrefix = ""
 
 # add redirects/headers
 [outputs]

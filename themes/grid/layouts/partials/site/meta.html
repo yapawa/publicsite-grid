@@ -4,3 +4,9 @@
 
 {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
 {{ hugo.Generator }}
+
+{{ if and (eq .Type "gallery") (eq .Params.contentType "collection" ) }}
+  {{ range where .Pages.ByWeight "Type" "gallery" }}
+    <link rel="prefetch" href="{{ .Permalink }}">
+  {{ end }}
+{{ end }}

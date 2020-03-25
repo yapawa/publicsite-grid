@@ -6,6 +6,7 @@ enableRobotsTXT = true
 disableAliases = true
 disableKinds = ['tags', 'categories']
 theme = "grid"
+googleAnalytics = ""
 
 [params]
 disallow_search_engines = false # set robots.txt to disallow everything

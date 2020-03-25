@@ -31,6 +31,7 @@ parameters["hugoParamsThemeColor"]="$HUGO_PARAMS_THEMECOLOR"
 parameters["hugoLanguageCode"]="$HUGO_LANGUAGECODE"
 parameters["hugoParamsApi"]="$HUGO_PARAMS_API"
 parameters["hugoParamsCacheDomain"]="$HUGO_PARAMS_CACHEDOMAIN"
+parameters["hugoGoogleAnalytics"]="$HUGO_GOOGLEANALYTICS"
 
 s_parameters=''
 for i in "${!parameters[@]}" ; do

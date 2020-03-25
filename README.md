@@ -22,6 +22,7 @@ AWS_REGION=aws-region
 DOMAIN_NAME=domainName
 CERTIFICATE_ARN=arn:aws:acm:us-east-1:xxxxx:certificate/yyyyyy
 HOSTED_ZONE_ID=hostedZoneId
+HUGO_GOOGLEANALYTICS=""
 ```
 * __HUGO_TITLE__: Title of the site
 * __HUGO_PARAMS_PAGETITLEPREFIX__: Title prefix to use in the &lttitle&gt tag
@@ -36,6 +37,7 @@ HOSTED_ZONE_ID=hostedZoneId
 * __DOMAIN_NAME__: Domain name
 * __CERTIFICATE_ARN__: ACM certificate ARN
 * __HOSTED_ZONE_ID__: Route53 hosted ZoneId for _domain name_
+* __HUGO_GOOGLEANALYTICS__: Google Analytics Tracking Code
 
 ### Or export variables
 Ideal for production build or CI/CD

@@ -45,6 +45,10 @@
     "hugoParamsCacheDomain": {
       "Type": "String",
       "Default": ""
+    },
+    "hugoGoogleAnalytics": {
+      "Type": "String",
+      "Default": ""
     }
   },
   "Resources": {
@@ -259,6 +263,12 @@
               "Name": "DISTRIBUTION",
               "Value": {
                 "Ref": "CloudFrontDistribution"
+              }
+            },
+            {
+              "Name": "HUGO_GOOGLEANALYTICS",
+              "Value": {
+                "Ref": "hugoGoogleAnalytics"
               }
             }
           ]

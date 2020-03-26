@@ -198,7 +198,7 @@
         "Description": "Build Yapawa Public Site",
         "Source": {
           "Type": "NO_SOURCE",
-          "BuildSpec": "version: 0.2\nphases:\n  install:\n    commands:\n      - curl https://github.com/gohugoio/hugo/releases/download/v0.68.1/hugo_extended_0.68.1_Linux-64bit.tar.gz -o /tmp/hugo.tar.gz -s -L\n      - tar xzfv /tmp/hugo.tar.gz -C /usr/local/bin/\n  build:\n    commands:\n      - git clone https://github.com/yapawa/publicsite-grid.git\n      - cd publicsite-grid\n      - npm ci\n      - npm run deploy"
+          "BuildSpec": "version: 0.2\nphases:\n  install:\n    commands:\n      - curl https://github.com/gohugoio/hugo/releases/download/v0.68.3/hugo_extended_0.68.3_Linux-64bit.tar.gz -o /tmp/hugo.tar.gz -s -L\n      - tar xzfv /tmp/hugo.tar.gz -C /usr/local/bin/\n  build:\n    commands:\n      - git clone https://github.com/yapawa/publicsite-grid.git\n      - cd publicsite-grid\n      - npm ci\n      - npm run deploy"
         },
         "Environment": {
           "Type": "LINUX_CONTAINER",

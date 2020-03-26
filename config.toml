@@ -4,7 +4,7 @@ title = ""
 
 enableRobotsTXT = true
 disableAliases = true
-disableKinds = ['tags', 'categories']
+disableKinds = ["taxonomy", "taxonomyTerm"]
 theme = "grid"
 googleAnalytics = ""
 

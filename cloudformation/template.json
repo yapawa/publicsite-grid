@@ -74,6 +74,19 @@
         }
       }
     },
+    "CodeBuildCache": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "BucketName": { "Fn::Sub": ["${Domain}-codebuild-cache", {"Domain": {"Ref": "domainName"}}]},
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
+      }
+    },
     "CloudFrontDistribution": {
       "Type": "AWS::CloudFront::Distribution",
       "DependsOn": [
@@ -201,7 +214,7 @@
         "Description": "Build Yapawa Public Site",
         "Source": {
           "Type": "NO_SOURCE",
-          "BuildSpec": "version: 0.2\nphases:\n  install:\n    commands:\n      - curl https://github.com/gohugoio/hugo/releases/download/v0.68.3/hugo_extended_0.68.3_Linux-64bit.tar.gz -o /tmp/hugo.tar.gz -s -L\n      - tar xzfv /tmp/hugo.tar.gz -C /usr/local/bin/\n  build:\n    commands:\n      - git clone https://github.com/yapawa/publicsite-grid.git\n      - cd publicsite-grid\n      - npm ci\n      - npm run deploy"
+          "BuildSpec": "version: 0.2\nphases:\n  install:\n    commands:\n      - curl https://github.com/gohugoio/hugo/releases/download/v0.68.3/hugo_extended_0.68.3_Linux-64bit.tar.gz -o /tmp/hugo.tar.gz -s -L\n      - tar xzfv /tmp/hugo.tar.gz -C /usr/local/bin/\n  build:\n    commands:\n      - git clone https://github.com/yapawa/publicsite-grid.git\n      - cd publicsite-grid\n      - npm ci\n      - npm run deploy\ncache:\n  paths:\n    - 'node_modules/**/*'"
         },
         "Environment": {
           "Type": "LINUX_CONTAINER",
@@ -279,6 +292,10 @@
         "Artifacts": {
           "Type": "NO_ARTIFACTS"
         },
+        "Cache": {
+          "Location": { "Fn::Sub": ["${CodeBuildCache}/${Domain}/cache", {"Domain": {"Ref": "domainName"}}]},
+          "Type": "S3"
+        },
         "ServiceRole": {
           "Fn::GetAtt": [
             "CodeBuildServiceRole",
@@ -351,6 +368,34 @@
                           {
                             "Ref": "S3Bucket"
                           }
+                        ]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:*"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "CodeBuildCache",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::Join":[
+                        "",
+                        [
+                          {
+                            "Fn::GetAtt": [
+                              "CodeBuildCache",
+                              "Arn"
+                            ]
+                          },
+                          "/*"
                         ]
                       ]
                     }

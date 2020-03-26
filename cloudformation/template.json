@@ -389,7 +389,8 @@
         "EventPattern": {
           "source": ["yapawa"],
           "detail": {
-            "aws_user_pools_web_client_id": [ {"Ref":"webClientId"} ]
+            "aws_user_pools_web_client_id": [ {"Ref":"webClientId"} ],
+            "action": [ "need-build" ]
           }
         },
         "Name":{"Ref": "domainName"},

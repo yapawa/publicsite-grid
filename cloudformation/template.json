@@ -49,6 +49,9 @@
     "hugoGoogleAnalytics": {
       "Type": "String",
       "Default": ""
+    },
+    "webClientId": {
+      "Type": "String"
     }
   },
   "Resources": {
@@ -369,6 +372,81 @@
                     {
                       "Fn::Sub": "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
                     }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "CodeBuildEventTrigger": {
+      "Type" : "AWS::Events::Rule",
+      "Properties": {
+        "Description": {
+          "Fn::Sub": [ "Trigger build of ${Domain}", {"Domain": {"Ref": "domainName"}}]
+        },
+        "EventPattern": {
+          "source": ["yapawa"],
+          "detail": {
+            "aws_user_pools_web_client_id": [ {"Ref":"webClientId"} ]
+          }
+        },
+        "Name":{"Ref": "domainName"},
+        "RoleArn" : {
+          "Fn::GetAtt": [
+            "CodeBuildEventTriggerServiceRole",
+            "Arn"
+          ]
+        },
+        "State" : "ENABLED",
+        "Targets": [
+          {
+            "Id": {"Ref":"CodeBuildProject"},
+            "Arn": {"Fn::Sub": "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/${CodeBuildProject}"},
+            "RoleArn" : {
+              "Fn::GetAtt": [
+                "CodeBuildEventTriggerServiceRole",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "CodeBuildEventTriggerServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sts:AssumeRole"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "events.amazonaws.com"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "YapawaEventBridgeAccess",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "codebuild:StartBuild"
+                  ],
+                  "Resource": [
+                    {"Fn::Sub": "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/${CodeBuildProject}"}
                   ]
                 }
               ]

@@ -32,6 +32,7 @@ parameters["hugoLanguageCode"]="$HUGO_LANGUAGECODE"
 parameters["hugoParamsApi"]="$HUGO_PARAMS_API"
 parameters["hugoParamsCacheDomain"]="$HUGO_PARAMS_CACHEDOMAIN"
 parameters["hugoGoogleAnalytics"]="$HUGO_GOOGLEANALYTICS"
+parameters["webClientId"]="$WEBCLIENTID"
 
 s_parameters=''
 for i in "${!parameters[@]}" ; do

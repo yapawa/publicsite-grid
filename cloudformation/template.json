@@ -222,6 +222,10 @@
           "Image": "aws/codebuild/standard:4.0",
           "EnvironmentVariables": [
             {
+              "Name": "HUGO_BASEURL",
+              "Value": { "Fn::Sub": ["https://${Domain}/", {"Domain": {"Ref": "domainName"}}]},
+            },
+            {
               "Name": "HUGO_TITLE",
               "Value": {
                 "Ref": "hugoTitle"

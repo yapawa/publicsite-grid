@@ -20,7 +20,7 @@
         </a>
         <div class="album-info">
           <h2><a href="{{ .Permalink }}">{{ .Name }}</a></h2>
-          <div class="album-description">{{ .Summary | replaceRE "\n+" "<br/>" | safeHTML }}</div>
+          <div class="album-description">{{ .Params.summary | replaceRE "\n+" "<br/>" | safeHTML }}</div>
         </div>
       </div>
     {{ end }}

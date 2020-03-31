@@ -14,11 +14,6 @@
         {{ $cover := index (.Params.Covers) 0 }}
         {{ if $cover }}
           {{ partial "thumbnail.html" (dict "item" $cover "cacheDomain" $.Site.Params.cacheDomain "transf" "w_150,h_100,c_crop" "width" 150 "height" 100 ) }}
-        {{ else }}
-          <div class="placeholder">
-            {{ $placeholderImg := resources.Get "img/placeholder.svg" }}
-            <img src="{{ $placeholderImg.Permalink }}">
-          </div>
         {{ end }}
       </a>
     </div>

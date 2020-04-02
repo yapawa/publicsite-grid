@@ -7,8 +7,10 @@
   {{ $title = printf "%s | %s" $title .Params.event }}
 {{ end }}
 
-{{ if .Params.Title }}
-  {{ $title = printf "%s | %s" $title .Params.Title }}
+{{ if not .IsHome }}
+  {{ if .Params.Title }}
+    {{ $title = printf "%s | %s" $title .Params.Title }}
+  {{ end }}
 {{ end }}
 
 {{ return $title }}

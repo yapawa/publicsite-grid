@@ -1,0 +1,23 @@
+{{ $title := partial "site/title.html" . -}}
+<meta property="og:title" content="{{ $title }}" />
+<meta property="og:description" content="{{ with .Description | plainify }}{{ . }}{{ else }}{{if .Summary}}{{ .Summary | plainify }}{{ else }}{{ with .Site.Params.tagline }}{{ . | plainify }}{{ end }}{{ end }}{{ end }}" />
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+{{ with $.Params.images }}{{ range first 6 . -}}
+<meta property="og:image" content="{{ . | absURL }}" />
+{{ end }}{{ end }}
+
+{{- $iso8601 := "2006-01-02T15:04:05-07:00" -}}
+{{- if .IsPage }}
+{{- if not .PublishDate.IsZero }}<meta property="article:published_time" {{ .PublishDate.Format $iso8601 | printf "content=%q" | safeHTMLAttr }} />
+{{ else if not .Date.IsZero }}<meta property="article:published_time" {{ .Date.Format $iso8601 | printf "content=%q" | safeHTMLAttr }} />
+{{ end }}
+{{- if not .Lastmod.IsZero }}<meta property="article:modified_time" {{ .Lastmod.Format $iso8601 | printf "content=%q" | safeHTMLAttr }} />{{ end }}
+{{- else }}
+{{- if not .Date.IsZero }}<meta property="og:updated_time" {{ .Date.Format $iso8601 | printf "content=%q" | safeHTMLAttr }} />
+{{- end }}
+{{- end }}{{/* .IsPage */}}
+
+{{- with .Site.Title }}
+<meta property="og:site_name" content="{{ . }}" />
+{{ end }}

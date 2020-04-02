@@ -1,0 +1,12 @@
+{{ $title := partial "site/title.html" . -}}
+<meta itemprop="name" content="{{ $title }}">
+<meta itemprop="description" content="{{ with .Description }}{{ . | plainify }}{{ else }}{{if .Summary}}{{ .Summary | plainify }}{{ else }}{{ with .Site.Params.tagline }}{{ . | plainify }}{{ end }}{{ end }}{{ end }}">
+
+{{if .IsPage}}{{ $ISO8601 := "2006-01-02T15:04:05-07:00" }}{{ if not .PublishDate.IsZero }}
+<meta itemprop="datePublished" content="{{ .PublishDate.Format $ISO8601 | safeHTML }}" />{{ end }}
+{{ if not .Lastmod.IsZero }}<meta itemprop="dateModified" content="{{ .Lastmod.Format $ISO8601 | safeHTML }}" />{{ end }}
+{{ with .Params.images }}{{ range first 6 . }}
+  <meta itemprop="image" content="{{ . | absURL }}">
+{{ end }}{{ end }}
+
+{{ end }}

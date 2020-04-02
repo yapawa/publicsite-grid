@@ -10,7 +10,7 @@
         <a href="{{ .Permalink }}">
           {{ $cover := index (.Params.Covers) 0 }}
           {{ if $cover }}
-            {{ partial "thumbnail.html" (dict "item" $cover "cacheDomain" $.Site.Params.cacheDomain "transf" "w_272,h_181,c_crop" "width" 272 "height" 181 ) }}
+            {{ partial "thumbnail.html" (dict "item" $cover "cacheDomain" $.Site.Params.cacheDomain "transf" "w_272,h_181,c_crop" "transfMobile" "w_500,ar_1.5" "width" 272 "height" 181 ) }}
           {{ else }}
             <div class="placeholder">
               {{ $placeholderImg := resources.Get "img/placeholder.svg" }}

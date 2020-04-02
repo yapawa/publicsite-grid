@@ -13,6 +13,7 @@
       {{- $imgWidth := $width -}}
       {{- $imgHeight := math.Round (div (mul $imgWidth .height) .width) -}}
       {{- $transf := printf "w_%d" $imgWidth -}}
+      {{- $transfMobile := printf "w_500" -}}
       {{ if gt (div .width .height) 3 }}
         {{ $imgWidth = add (mul 2 $width) $gutter }}
         {{- $imgHeight = math.Round (div (mul $imgWidth .height) .width) -}}
@@ -21,7 +22,7 @@
       {{ end }}
       {{- $cssRowSpan := (printf " row-span-%v" (math.Round (div $imgHeight 20)))  | safeCSS }}
       <div class="photo-grid-item{{ $cssRowSpan }}{{ $cssColSpan }}">
-        {{ partial "thumbnail.html" (dict "item" . "cacheDomain" $.Site.Params.cacheDomain "transf" $transf "width" $imgWidth "height" $imgHeight) }}
+        {{ partial "thumbnail.html" (dict "item" . "cacheDomain" $.Site.Params.cacheDomain "transf" $transf "transfMobile" $transfMobile "width" $imgWidth "height" $imgHeight) }}
       </div>
     {{ end }}
     </div>

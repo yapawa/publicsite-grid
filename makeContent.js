@@ -55,6 +55,7 @@ const frontMatter = (item, config) => {
         },
         width: cover.width,
         height: cover.height,
+        gravity: cover.gravity,
         slug: cover.slug.toLowerCase(),
         updatedAt: cover.updatedAt
       }

@@ -20,9 +20,11 @@
 
         {{ block "site/styles" . }}{{ partial "site/styles.html" . }}{{ end }}
 
+        {{if ne .Kind "404" }}
         {{- partial "site/schema.html" . -}}
         {{- partial "site/opengraph.html" . -}}
         {{- partial "site/twitter_cards.html" . -}}
+        {{ end }}
         {{ if hugo.IsProduction }}
             {{ template "_internal/google_analytics_async.html" . }}
         {{ end }}

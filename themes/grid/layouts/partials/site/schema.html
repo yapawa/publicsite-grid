@@ -2,11 +2,116 @@
 <meta itemprop="name" content="{{ $title }}">
 <meta itemprop="description" content="{{ with .Description }}{{ . | plainify }}{{ else }}{{if .Summary}}{{ .Summary | plainify }}{{ else }}{{ with .Site.Params.tagline }}{{ . | plainify }}{{ end }}{{ end }}{{ end }}">
 
-{{if .IsPage}}{{ $ISO8601 := "2006-01-02T15:04:05-07:00" }}{{ if not .PublishDate.IsZero }}
+{{ $ISO8601 := "2006-01-02T15:04:05-07:00" }}
+{{if .IsPage}}{{ if not .PublishDate.IsZero }}
 <meta itemprop="datePublished" content="{{ .PublishDate.Format $ISO8601 | safeHTML }}" />{{ end }}
 {{ if not .Lastmod.IsZero }}<meta itemprop="dateModified" content="{{ .Lastmod.Format $ISO8601 | safeHTML }}" />{{ end }}
 {{ with .Params.images }}{{ range first 6 . }}
   <meta itemprop="image" content="{{ . | absURL }}">
 {{ end }}{{ end }}
-
 {{ end }}
+
+{{ $cover := index (.Params.Covers) 0 -}}
+{{ if $cover }}
+  {{ $imSquare := "" -}}
+  {{ $imSD := "" -}}
+  {{ $imHD := "" -}}
+  {{ $gravity := "" -}}
+  {{ with $cover -}}
+    {{ if .gravity -}}
+      {{ $gravity = printf ",g_%s" .gravity -}}
+    {{ end -}}
+    {{ $imSquare = printf "https://%s/%s/%d/%s%s/%s.jpg" $.Site.Params.cacheDomain (.file.key | safeURL) (time .updatedAt).Unix ("w_1200,h_1200" | safeURL) $gravity (.slug | safeURL) }}
+    {{ $imSD = printf "https://%s/%s/%d/%s%s/%s.jpg" $.Site.Params.cacheDomain (.file.key | safeURL) (time .updatedAt).Unix ("w_1200,ar_4:3" | safeURL) $gravity (.slug | safeURL) }}
+    {{ $imHD = printf "https://%s/%s/%d/%s%s/%s.jpg" $.Site.Params.cacheDomain (.file.key | safeURL) (time .updatedAt).Unix ("w_1200,ar_16:9" | safeURL) $gravity (.slug | safeURL) }}
+  {{ end }}
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      {{ if .IsHome -}}
+      "@type": "WebSite",
+      "name": {{ $title }},
+      "description": {{ .Site.Params.tagline }},
+      {{ else -}}
+      "@type": "BlogPosting",
+      "headline": {{ $title }},
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": {{ .Permalink }}
+      },
+      "description": {{ with .Description }}{{ . | safeHTML }}{{ else }}{{ .Site.Params.tagline }}{{ end }},
+      {{ end -}}
+      {{ if $imSquare }}
+      "image": [
+        {{$imSquare | absURL }},
+        {{$imSD | absURL }},
+        {{$imHD | absURL }}
+      ],
+      {{ end }}
+      "url": {{ .Permalink }},
+      {{ if not .PublishDate.IsZero -}}
+      "datePublished": {{ .PublishDate.Format $ISO8601 | safeHTML }},
+      {{- else if not .Date.IsZero -}}
+      "datePublished": {{ .Date.Format $ISO8601 | safeHTML }},
+      {{- end }}
+      {{ with .Lastmod -}}
+      "dateModified": {{ .Format $ISO8601 | safeHTML }},
+      {{- end }}
+      {{ with .Site.Params.copyright -}}
+      "license": "{{ . }}",
+      {{ else -}}
+      "license": "{{ .Site.Title }}",
+      {{ end -}}
+      "author": {
+        "@type": "Person",
+        "name": "{{ .Site.Title }}"
+      },
+      "publisher": {
+      "@type": "Organization",
+      "name": "Yapawa",
+      "logo": {
+      "@type": "ImageObject",
+      "url": "https://admin.dev.yapawa.net/statics/app-logo-128x128.png"
+      }
+      }
+    }
+  </script>
+{{ end }}
+
+{{/* https://github.com/zdenekpribyla/hugo-breadcrumblist-structured-data/ */}}
+{{- $scratch := newScratch -}}
+{{- $scratch.Set "pages" slice -}}
+{{- $scratch.Set "reversed" slice -}}
+{{- $scratch.Set "current" . -}}
+{{- range slice 1 2 3 4 5 6 -}} <!-- Since there is no while loop in Hugo, I set it to a maximum of 6 crumbs. If there are more, you can increase the slice range -->
+  {{- if ($scratch.Get "current") -}}
+    {{- $scratch.Add "reversed" ($scratch.Get "current") -}}
+    {{- $scratch.Set "current" ($scratch.Get "current").Parent -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $scratch.Set "position" (len ($scratch.Get "reversed")) -}}
+{{- range $scratch.Get "reversed" -}}
+  {{- $scratch.Add "pages" (dict "position" ($scratch.Get "position") "page" .) -}}
+  {{- $scratch.Set "position" (sub ($scratch.Get "position") 1) -}}
+{{- end -}}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+{{- range sort ($scratch.Get "pages") "position" "asc" -}}{{- if ne .position 1 -}},{{- end -}}
+  {
+    "@type": "ListItem",
+    "position": {{ .position }},
+    "item":
+    {
+        "@id": {{ .page.Permalink }},
+        "name": "{{ .page.LinkTitle }}"
+    }
+  }
+{{- end -}}
+    ]
+  }
+</script>

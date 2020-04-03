@@ -1,0 +1,20 @@
+{{- $pc := .Site.Config.Privacy.GoogleAnalytics -}}
+{{- if not $pc.Disable -}}
+{{ with .Site.GoogleAnalytics }}
+<amp-analytics type="googleanalytics">
+  <script type="application/json">
+    {
+      "vars": {
+        "account": {{ . }}
+      },
+      "triggers": {
+        "trackPageview": {
+          "on": "visible",
+          "request": "pageview"
+        }
+      }
+    }
+  </script>
+</amp-analytics>
+{{ end }}
+{{- end -}}

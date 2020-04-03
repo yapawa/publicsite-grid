@@ -19,16 +19,19 @@ figure
   &.tiny
     width: 150px
 
-    img
+    img,
+    amp-img
       box-shadow: unset
 
-  img
+  img,
+  amp-img
     @extend %picture
     box-shadow: 2px 2px 8px 2px $placeholder-color
     cursor: pointer
 
 .photo-grid-item
-  img
+  img,
+  amp-img
     @extend %picture
     cursor: zoom-in
 
@@ -42,8 +45,11 @@ figure
     justify-content: center
 
   .photo-grid-item
-    img
+    img,
+    amp-img
       height: 100%
+      max-width: 100%
+      min-width: 100%
       object-fit: cover
       width: 100%
 
@@ -59,11 +65,18 @@ figure
     padding: 0
     width: 100%
 
-    img
+    img,
+    amp-img
       height: auto
+      max-width: 100%
       width: 100%
 
   .photo-grid-item
-    img
+    img,
+    amp-img
       height: auto
+      max-width: 100%
       width: 100%
+
+    amp-img
+      display: inline-block

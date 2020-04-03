@@ -18,8 +18,9 @@ pageTitlePrefix = ""
 
 # add redirects/headers
 [outputs]
-home = ["HTML", "RSS", "REDIRECTS", "HEADERS"]
-page = ["HTML", "RSS", "JSON"]
+home = ["HTML", "AMP", "RSS", "REDIRECTS", "HEADERS"]
+page = ["HTML", "AMP", "RSS", "JSON"]
+section = ["HTML", "AMP", "RSS"]
 
 # remove .{ext} from text/netlify
 [mediaTypes."text/redirects"]

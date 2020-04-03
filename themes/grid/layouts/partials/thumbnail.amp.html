@@ -1,0 +1,30 @@
+<figure>
+<amp-img
+  {{ if .lightbox }}lightbox="webp"{{ end }}
+  {{ if .item.description }}aria-describedby="descr-{{ .item.file.key }}"{{ end }}
+  width="{{ .width }}"
+  height="{{ .height }}"
+  src="https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }}/{{ .item.slug | safeURL }}.webp"
+  srcset="https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }}/{{ .item.slug | safeURL }}.webp {{ .width }}w,
+    https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_2/{{ .item.slug | safeURL }}.webp {{ mul 2 .width }}w,
+    https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_3/{{ .item.slug | safeURL }}.webp {{ mul 3 .width }}w,
+    https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_4/{{ .item.slug | safeURL }}.webp {{ mul 4 .width }}w"
+  sizes="(min-width: 480px) 272px, 500px"
+>
+  <div fallback>
+  <amp-img
+    {{ if .lightbox }}lightbox="jpg"{{ end }}
+    {{ if .item.description }}aria-describedby="{{ .item.description }}"{{ end }}
+    width="{{ .width }}"
+    height="{{ .height }}"
+    src="https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }}/{{ .item.slug | safeURL }}.jpg"
+    srcset="https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }}/{{ .item.slug | safeURL }}.jpg {{ .width }}w,
+      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_2/{{ .item.slug | safeURL }}.jpg {{ mul 2 .width }}w,
+      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_3/{{ .item.slug | safeURL }}.jpg {{ mul 3 .width }}w,
+      https://{{ .cacheDomain }}/{{ .item.file.key | safeURL }}/{{ (time .item.updatedAt).Unix }}/{{ .transf | safeURL }},dpr_4/{{ .item.slug | safeURL }}.jpg {{ mul 4 .width }}w"
+    sizes="(min-width: 480px) 272px, 500px"
+  ></amp-img>
+  </div>
+</amp-img>
+</figure>
+{{ if .item.description }}<div hidden id="descr-{{ .item.file.key }}">{{ .item.description }}</div>{{ end }}

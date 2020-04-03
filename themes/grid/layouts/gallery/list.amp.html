@@ -1,0 +1,28 @@
+{{ define "main" }}
+
+  {{ if not .IsHome }}
+    {{ partial "album-title.html" . }}
+  {{ end }}
+
+  <div class="album-grid">
+    {{ range where .Pages.ByWeight "Type" "gallery" }}
+      {{- $cover := index (.Params.Covers) 0 -}}
+      <div class="album-grid-item"{{ if not $cover }} style="margin-left:0;margin-right:0"{{ end }}>
+        <a href="{{ .Permalink }}">
+          {{ if $cover }}
+            {{ partial "thumbnail.amp.html" (dict "item" $cover "cacheDomain" $.Site.Params.cacheDomain "transf" "w_272,h_181,c_crop" "width" 272 "height" 181 ) }}
+          {{ else }}
+            <div class="placeholder">
+              {{ $placeholderImg := resources.Get "img/placeholder.svg" }}
+              <amp-img width="272" height="181" layout="intrinsic" src="{{ $placeholderImg.Permalink }}"></amp-img>
+            </div>
+          {{ end }}
+        </a>
+        <div class="album-info">
+          <h2><a href="{{ .Permalink }}">{{ .Name }}</a></h2>
+          <div class="album-description">{{ .Params.summary | replaceRE "\n+" "<br/>" | safeHTML }}</div>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+{{ end }}

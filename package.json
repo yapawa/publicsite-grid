@@ -10,7 +10,7 @@
     "sync": ". ./deploy.sh"
   },
   "dependencies": {
-    "autoprefixer": "^9.7.4",
+    "autoprefixer": "^9.7.5",
     "netlify-lambda": "^1.6.3",
     "postcss-cli": "^7.1.0"
   },
@@ -18,12 +18,12 @@
     "dotenv": "^8.2.0",
     "dotenv-cli": "^3.1.0",
     "eslint": "^6.8.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "got": "^10.6.0",
+    "got": "^10.7.0",
     "toml": "^3.0.0"
   }
 }

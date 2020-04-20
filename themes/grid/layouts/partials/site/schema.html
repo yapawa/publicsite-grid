@@ -108,7 +108,7 @@
     "item":
     {
         "@id": {{ .page.Permalink }},
-        "name": "{{ .page.LinkTitle }}"
+        "name": {{ .page.LinkTitle | safeJS | plainify }}
     }
   }
 {{- end -}}

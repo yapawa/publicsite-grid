@@ -10,7 +10,7 @@
     "sync": ". ./deploy.sh"
   },
   "dependencies": {
-    "autoprefixer": "^9.7.5",
+    "autoprefixer": "^9.7.6",
     "netlify-lambda": "^1.6.3",
     "postcss-cli": "^7.1.0"
   },

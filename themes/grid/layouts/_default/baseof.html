@@ -21,12 +21,9 @@
         {{ block "site/styles" . }}{{ partial "site/styles.html" . }}{{ end }}
 
         {{if ne .Kind "404" }}
-        {{- partial "site/schema.html" . -}}
-        {{- partial "site/opengraph.html" . -}}
-        {{- partial "site/twitter_cards.html" . -}}
-        {{ end }}
-        {{ if hugo.IsProduction }}
-            {{ template "_internal/google_analytics_async.html" . }}
+          {{- partial "site/schema.html" . -}}
+          {{- partial "site/opengraph.html" . -}}
+          {{- partial "site/twitter_cards.html" . -}}
         {{ end }}
     </head>
     <body>
@@ -38,12 +35,15 @@
         {{ block "header" . }}{{ partial "site/header.html" . }}{{ end }}
 
         <main class="site-main" role="main">
-          
+
             {{ block "main" . }}{{ end }}
 
         </main>
 
         {{ block "footer" . }}{{ partial "site/footer.html" . }}{{ end }}
         {{ block "site/scripts" . }}{{ partial "site/scripts.html" . }}{{ end }}
+        {{ if hugo.IsProduction }}
+          {{ template "_internal/google_analytics.html" . }}
+        {{ end }}
     </body>
 </html>

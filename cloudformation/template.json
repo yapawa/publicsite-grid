@@ -216,16 +216,16 @@
         "Description": "Build Yapawa Public Site",
         "Source": {
           "Type": "NO_SOURCE",
-          "BuildSpec": "version: 0.2\nphases:\n  install:\n    commands:\n      - curl https://github.com/gohugoio/hugo/releases/download/v0.68.3/hugo_extended_0.68.3_Linux-64bit.tar.gz -o /tmp/hugo.tar.gz -s -L\n      - tar xzfv /tmp/hugo.tar.gz -C /usr/local/bin/\n  build:\n    commands:\n      - git clone https://github.com/yapawa/publicsite-grid.git\n      - cd publicsite-grid\n      - npm i\n      - npm run deploy\ncache:\n  paths:\n    - 'node_modules/**/*'"
+          "BuildSpec": "version: 0.2\nphases:\n  install:\n    commands:\n      - curl https://github.com/gohugoio/hugo/releases/download/v0.105.0/hugo_extended_0.105.0_Linux-64bit.tar.gz -o /tmp/hugo.tar.gz -s -L\n      - tar xzfv /tmp/hugo.tar.gz -C /usr/local/bin/\n  build:\n    commands:\n      - git clone https://github.com/yapawa/publicsite-grid.git\n      - cd publicsite-grid\n      - npm i\n      - npm run deploy\ncache:\n  paths:\n    - 'node_modules/**/*'"
         },
         "Environment": {
           "Type": "LINUX_CONTAINER",
           "ComputeType": "BUILD_GENERAL1_SMALL",
-          "Image": "aws/codebuild/standard:4.0",
+          "Image": "aws/codebuild/standard:6.0",
           "EnvironmentVariables": [
             {
               "Name": "HUGO_BASEURL",
-              "Value": { "Fn::Sub": ["https://${Domain}/", {"Domain": {"Ref": "domainName"}}]},
+              "Value": { "Fn::Sub": ["https://${Domain}/", {"Domain": {"Ref": "domainName"}}]}
             },
             {
               "Name": "HUGO_TITLE",

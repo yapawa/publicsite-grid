@@ -1,17 +1,17 @@
 {{- $pc := .Site.Config.Privacy.GoogleAnalytics -}}
 {{- if not $pc.Disable -}}
 {{ with .Site.GoogleAnalytics }}
-<amp-analytics type="googleanalytics">
+<amp-analytics type="googleanalytics" config="https://amp.analytics-debugger.com/ga4.json" data-credentials="include">
   <script type="application/json">
     {
       "vars": {
-        "account": {{ . }}
-      },
-      "triggers": {
-        "trackPageview": {
-          "on": "visible",
-          "request": "pageview"
-        }
+        "GA4_MEASUREMENT_ID": "{{ . }}",
+        "GA4_ENDPOINT_HOSTNAME": "www.google-analytics.com",
+        "DEFAULT_PAGEVIEW_ENABLED": true,
+        "GOOGLE_CONSENT_ENABLED": false,
+        "WEBVITALS_TRACKING": false,
+        "PERFORMANCE_TIMING_TRACKING": false,
+        "SEND_DOUBLECLICK_BEACON": false
       }
     }
   </script>

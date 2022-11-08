@@ -1,13 +1,14 @@
 'use strict'
 
-const got = require('got')
-const fs = require('fs')
-const path = require('path')
+
+import got from 'got'
+import { readFileSync, rmSync, mkdirSync, writeFileSync } from 'fs'
+import { join, dirname } from 'path'
 const contentPath = 'content'
-const toml = require('toml')
+import {parse} from 'toml'
 
 const parseConfig = () => {
-  const hugoConfig = toml.parse(fs.readFileSync('./config.toml'))
+  const hugoConfig = parse(readFileSync('./config.toml'))
   if (process.env.HUGO_PARAMS_API) {
     hugoConfig.params.api = process.env.HUGO_PARAMS_API
   }
@@ -23,8 +24,10 @@ const getData = async (api) => {
 }
 
 const clearContent = (path) => {
-  fs.rmdirSync(path, { recursive: true })
-  fs.mkdirSync(path, { recursive: true })
+  try {
+    rmSync(path, { recursive: true })
+  } catch {}
+  mkdirSync(path, { recursive: true })
 }
 
 const frontMatter = (item, config) => {
@@ -74,11 +77,11 @@ const frontMatter = (item, config) => {
 const storeContent = (item, config) => {
   const fm = frontMatter(item, config)
   const baseDir = [contentPath, ...item.path]
-  const fileName = (item.id === 'root') ? '_index.md' : (item.type === 'collection') ? path.join(item.slug.toLowerCase(), '_index.md') : `${item.slug.toLowerCase()}.md`
-  const filePath = path.join(...baseDir, fileName).toLowerCase()
-  fs.mkdirSync(path.dirname(filePath), { recursive: true })
+  const fileName = (item.id === 'root') ? '_index.md' : (item.type === 'collection') ? join(item.slug.toLowerCase(), '_index.md') : `${item.slug.toLowerCase()}.md`
+  const filePath = join(...baseDir, fileName).toLowerCase()
+  mkdirSync(dirname(filePath), { recursive: true })
 
-  fs.writeFileSync(filePath, fm)
+  writeFileSync(filePath, fm)
 }
 
 const clean = obj => {
